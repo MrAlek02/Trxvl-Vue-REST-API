@@ -1,22 +1,31 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import Honeymoon from './Items.vue'
-
-import { register } from 'swiper/element/bundle'
-register()
+import { ref, watch } from 'vue'
+import RecentlyItem from './RecentlyItem.vue'
 
 const posts = ref([])
 
-onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/categories/honeymoon/22')
-    if (!response.ok) throw new Error('Failed to fetch posts')
-
-    posts.value = await response.json()
-  } catch (error) {
-    console.error('Error fetching posts:', error)
-  }
+const props = defineProps({
+  categoryId: {
+    type: Number,
+    required: true,
+  },
 })
+
+watch(
+  () => props.categoryId,
+  async (newCategoryId) => {
+    try {
+      const response = await fetch(
+        `http://localhost/trxvl/wp-json/trxvl/v1/categories/recently/${newCategoryId}`,
+      )
+      if (!response.ok) throw new Error('Failed to fetch posts')
+
+      posts.value = await response.json()
+    } catch (error) {
+      console.error('Error fetching posts:', error)
+    }
+  },
+)
 </script>
 
 <template>
@@ -24,8 +33,8 @@ onMounted(async () => {
     <h1 class="| js-recently">Recetly Viewed</h1>
   </div>
   <div class="recently-cards">
-    <div v-for="post in posts" :key="post.id" class="item">
-      <Honeymoon
+    <div v-for="post in posts" :key="post.id">
+      <RecentlyItem
         :id="post.id"
         :title="post.title"
         :thumbnail="post.thumbnail"
@@ -48,4 +57,15 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-<style></style>
+<style>
+.recently-cards {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: 10%;
+}
+
+.recently-cards .card-mtn {
+  margin-right: 20px;
+}
+</style>

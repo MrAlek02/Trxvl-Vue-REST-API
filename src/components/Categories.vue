@@ -37,7 +37,9 @@ onMounted(async () => {
         direction="horizontal"
       >
         <swiper-slide class="swiper-slide" v-for="category in categories" :key="category.id">
-          <CategoryItem :categoryId="category.id" />
+          <router-link :to="`/categories/${category.slug}`">
+            <CategoryItem :categoryId="category.id" />
+          </router-link>
         </swiper-slide>
       </swiper-container>
     </div>

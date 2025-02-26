@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import DestinationsItem from './Items.vue'
 
 import { register } from 'swiper/element/bundle'
@@ -7,9 +7,19 @@ register()
 
 const posts = ref([])
 
-onMounted(async () => {
+const props = defineProps({
+  categoryId: {
+    type: Number,
+    required: true,
+  },
+})
+
+watch(  () => props.categoryId,
+async (newCategoryId) => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/categories/post/22')
+    const response = await fetch(
+      `http://localhost/trxvl/wp-json/trxvl/v1/categories/post/${newCategoryId}`,
+    )
     if (!response.ok) throw new Error('Failed to fetch posts')
 
     posts.value = await response.json()

@@ -1,18 +1,9 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import Home from './views/HomeView.vue'
-</script>
+<script setup></script>
 
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/about">About</router-link>
-      <router-link to="/contact">Contact</router-link>
-    </nav>
     <router-view></router-view>
   </div>
 </template>
-
 
 <style scoped></style>

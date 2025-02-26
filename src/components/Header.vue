@@ -1,8 +1,8 @@
 <template>
   <header class="header">
-    <a href="#" class="logo">trxvl.</a>
+    <router-link to="/" class="logo">trxvl.</router-link>
     <nav class="navbar">
-      <a class="active" href="#">Home</a>
+      <router-link to="/">Home</router-link>
       <a href="#">Stays</a>
       <a href="#">Flights</a>
       <a href="#">Packages</a>

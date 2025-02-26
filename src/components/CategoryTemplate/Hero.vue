@@ -1,27 +1,35 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 
 const backgroundImage = ref(null)
 const searchImage = ref(null)
 const checksImage = ref(null)
 const personsImage = ref(null)
 
-onMounted(async () => {
-  try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/categories/22')
-    if (!response.ok) throw new Error('Failed to fetch images')
-
-    const data = await response.json()
-    backgroundImage.value = data?.hero_background || null
-    searchImage.value = data?.search_image || null
-    checksImage.value = data?.checks_image || null
-    personsImage.value = data?.person_image || null
-  } catch (error) {
-    console.error('Error fetching images:', error)
-  } finally {
-    isLoading.value = false
-  }
+const props = defineProps({
+  categoryId: { type: Number, required: true },
 })
+
+watch(
+  () => props.categoryId,
+  async (newCategoryId) => {
+    try {
+      const response = await fetch(
+        `http://localhost/trxvl/wp-json/trxvl/v1/categories/${newCategoryId}`,
+      )
+      if (!response.ok) throw new Error('Failed to fetch images')
+
+      const data = await response.json()
+      backgroundImage.value = data?.hero_background || null
+      searchImage.value = data?.search_image || null
+      checksImage.value = data?.checks_image || null
+      personsImage.value = data?.person_image || null
+    } catch (error) {
+      console.error('Error fetching images:', error)
+    }
+  },
+  { immediate: true },
+)
 </script>
 <template>
   <section class="hero">
@@ -82,3 +90,17 @@ onMounted(async () => {
     </div>
   </section>
 </template>
+<style>
+.thumbnail {
+  width: 344px;
+  height: 223px;
+}
+.package {
+  margin-left: 10%;
+}
+
+.honeymoon {
+  margin-left: 10%;
+  margin-bottom: 5%;
+}
+</style>

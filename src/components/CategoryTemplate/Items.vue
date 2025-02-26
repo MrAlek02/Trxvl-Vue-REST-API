@@ -78,9 +78,9 @@ onMounted(() => {
     <div class="skeleton-box skeleton-image"></div>
   </div>
 
-  <div v-else class="card-mtn | js-recently">
+  <div v-else class="card-mtn | js-destinations">
     <a href="#">
-      <img :src="thumbnail" :alt="title" />
+      <img class="thumbnail" :src="thumbnail" :alt="title" />
       <div class="card-mtn-content">
         <div class="mtn-title-row">
           <h2>{{ title }}</h2>
