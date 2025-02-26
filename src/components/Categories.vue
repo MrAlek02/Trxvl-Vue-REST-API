@@ -5,7 +5,6 @@ import CategoryItem from './CategoryItem.vue'
 import { register } from 'swiper/element/bundle'
 register()
 
-// Reactive categories array
 const categories = ref([])
 const excludedCategoryId = 1
 

@@ -1,6 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import HeroSkeleton from './TheWelcomeSkeleton.vue'
+import flatpickr from 'flatpickr'
+import 'flatpickr/dist/flatpickr.min.css'
 
+document.addEventListener('DOMContentLoaded', function () {
+  flatpickr('.date-picker', {})
+})
+
+const isLoading = ref(true)
 const backgroundImage = ref(null)
 const searchImage = ref(null)
 const checksImage = ref(null)
@@ -9,7 +17,7 @@ const personsImage = ref(null)
 onMounted(async () => {
   try {
     const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/page/2')
-    if (!response.ok) throw new Error('Failed to fetch background image')
+    if (!response.ok) throw new Error('Failed to fetch images')
 
     const data = await response.json()
     backgroundImage.value = data?.background_image || null
@@ -17,22 +25,27 @@ onMounted(async () => {
     checksImage.value = data?.checks_image || null
     personsImage.value = data?.persons_image || null
   } catch (error) {
-    console.error('Error fetching background image:', error)
+    console.error('Error fetching images:', error)
+  } finally {
+    isLoading.value = false
   }
 })
 </script>
 
 <template>
-  <section class="hero">
+  <section v-if="isLoading">
+    <HeroSkeleton />
+  </section>
+  <section v-else class="hero">
     <div
       class="hero-bg"
       :style="{ backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none' }"
     >
       <div class="container">
-        <div class="title | js-hero">
+        <div class="title">
           <h1>The whole world <br />awaits.</h1>
         </div>
-        <div class="search-bar | js-hero">
+        <div class="search-bar">
           <div
             class="search"
             :style="{ backgroundImage: searchImage ? `url(${searchImage})` : 'none' }"
@@ -68,7 +81,7 @@ onMounted(async () => {
             class="persons-icon"
             :style="{ backgroundImage: personsImage ? `url(${personsImage})` : 'none' }"
           >
-            <select name="persons" class="select2 persons">
+            <select name="persons" class="persons">
               <option value="1room">1 room, 2 adults</option>
               <option value="1room2">1 room, 1 adult</option>
               <option value="2room2">2 rooms, 2 adults</option>
@@ -217,40 +230,13 @@ onMounted(async () => {
   flex: 1;
   background-repeat: no-repeat;
   background-position: 10px center;
-  margin-right: 40px;
 }
 
-.select2-container--default .select2-selection--single {
-  background-color: transparent !important;
-  color: white !important;
-  border: none !important;
-  outline: none !important;
-  margin-left: 40px;
-  margin-right: -40px;
-  flex: 1;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-  color: white !important;
-  padding-left: 5px !important;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-  display: none !important;
-}
-
-.select2-container--default .select2-dropdown {
-  background: rgba(0, 0, 0, 0.5) !important;
-  backdrop-filter: blur(10px);
-  border: none !important;
-}
-
-.select2-results__option {
-  color: white !important;
-}
-
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-  background: rgba(0, 0, 0, 0.5) !important;
+.persons-icon select {
+  padding-left: 40px;
+  border: none;
+  outline: none;
+  appearance: none;
 }
 
 .hero-subtitle {
