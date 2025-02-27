@@ -7,9 +7,11 @@ register()
 
 const posts = ref([])
 
+const apiDestinationsUrl = `${import.meta.env.VITE_API_DESTINATIONS_URL}`
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl-ruta/v1/posts')
+    const response = await fetch(apiDestinationsUrl)
     if (!response.ok) throw new Error('Failed to fetch posts')
 
     posts.value = await response.json()

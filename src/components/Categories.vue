@@ -8,11 +8,11 @@ register()
 const categories = ref([])
 const excludedCategoryId = 1
 
+const apiCategoriesUrl = `${import.meta.env.VITE_API_CATEGORIES_URL}?exclude=${excludedCategoryId}`
+
 onMounted(async () => {
   try {
-    const response = await fetch(
-      `http://localhost/trxvl/wp-json/wp/v2/categories?exclude=${excludedCategoryId}`,
-    )
+    const response = await fetch(apiCategoriesUrl)
     if (!response.ok) throw new Error('Failed to fetch categories')
 
     categories.value = await response.json()
@@ -37,7 +37,7 @@ onMounted(async () => {
         direction="horizontal"
       >
         <swiper-slide class="swiper-slide" v-for="category in categories" :key="category.id">
-          <router-link :to="`/categories/${category.slug}`">
+          <router-link class="links" :to="`/categories/${category.slug}`">
             <CategoryItem :categoryId="category.id" />
           </router-link>
         </swiper-slide>
@@ -46,6 +46,9 @@ onMounted(async () => {
   </div>
 </template>
 <style>
+.links {
+  text-decoration: none;
+}
 .swiper-slide {
   width: fit-content !important;
 }

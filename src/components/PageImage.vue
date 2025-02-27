@@ -3,9 +3,11 @@ import { ref, onMounted } from 'vue'
 
 const imageData = ref(null)
 
+const apiPageImageUrl = `${import.meta.env.VITE_API_PAGEIMAGE_URL}`
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/image/2')
+    const response = await fetch(apiPageImageUrl)
     if (!response.ok) throw new Error('Failed to fetch image data')
 
     imageData.value = await response.json()

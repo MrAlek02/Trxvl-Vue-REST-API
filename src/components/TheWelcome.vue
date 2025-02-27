@@ -14,9 +14,11 @@ const searchImage = ref(null)
 const checksImage = ref(null)
 const personsImage = ref(null)
 
+const apiPageUrl = `${import.meta.env.VITE_API_PAGE_URL}`
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/page/2')
+    const response = await fetch(apiPageUrl)
     if (!response.ok) throw new Error('Failed to fetch images')
 
     const data = await response.json()

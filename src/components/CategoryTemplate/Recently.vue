@@ -14,10 +14,12 @@ const props = defineProps({
 watch(
   () => props.categoryId,
   async (newCategoryId) => {
+    if (!newCategoryId) return
+
+    const apiUrl = `${import.meta.env.VITE_API_RECENTLY_URL}/${newCategoryId}`
+
     try {
-      const response = await fetch(
-        `http://localhost/trxvl/wp-json/trxvl/v1/categories/recently/${newCategoryId}`,
-      )
+      const response = await fetch(apiUrl)
       if (!response.ok) throw new Error('Failed to fetch posts')
 
       posts.value = await response.json()
@@ -25,9 +27,9 @@ watch(
       console.error('Error fetching posts:', error)
     }
   },
+  { immediate: true },
 )
 </script>
-
 <template>
   <div class="container">
     <h1 class="| js-recently">Recetly Viewed</h1>

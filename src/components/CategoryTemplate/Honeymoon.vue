@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import Honeymoon from './Items.vue'
-
 import { register } from 'swiper/element/bundle'
+
 register()
 
 const posts = ref([])
@@ -12,13 +12,16 @@ const props = defineProps({
     required: true,
   },
 })
+
 watch(
   () => props.categoryId,
   async (newCategoryId) => {
+    if (!newCategoryId) return
+
+    const apiUrl = `${import.meta.env.VITE_API_HONEYMOON_URL}/${newCategoryId}`
+
     try {
-      const response = await fetch(
-        `http://localhost/trxvl/wp-json/trxvl/v1/categories/honeymoon/${newCategoryId}`,
-      )
+      const response = await fetch(apiUrl)
       if (!response.ok) throw new Error('Failed to fetch posts')
 
       posts.value = await response.json()
@@ -26,6 +29,7 @@ watch(
       console.error('Error fetching posts:', error)
     }
   },
+  { immediate: true },
 )
 </script>
 

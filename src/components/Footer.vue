@@ -3,9 +3,11 @@ import { ref, onMounted } from 'vue'
 
 const footerData = ref(null)
 
+const apiFooterUrl = `${import.meta.env.VITE_API_FOOTER_URL}`
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/footer')
+    const response = await fetch(apiFooterUrl)
     if (!response.ok) throw new Error('Failed to fetch footer data')
 
     footerData.value = await response.json()

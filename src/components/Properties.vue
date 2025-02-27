@@ -6,10 +6,11 @@ import { register } from 'swiper/element/bundle'
 register()
 
 const properties = ref([])
+const apiPropertiesUrl = `${import.meta.env.VITE_API_PROPERTIES_URL}`
 
 onMounted(async () => {
   try {
-    const response = await fetch(`http://localhost/trxvl/wp-json/trxvl/v1/properties`)
+    const response = await fetch(apiPropertiesUrl)
     if (!response.ok) throw new Error('Failed to fetch properties')
 
     properties.value = await response.json()

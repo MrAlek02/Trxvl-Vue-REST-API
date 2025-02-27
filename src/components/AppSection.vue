@@ -13,9 +13,11 @@ const searchButton = ref(null)
 const appStore = ref(null)
 const googleStore = ref(null)
 
+const appSectionUrl = import.meta.env.VITE_API_APP_SECTION_URL
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/app/2')
+    const response = await fetch(appSectionUrl)
     if (!response.ok) throw new Error('Failed to fetch posts')
 
     const data = await response.json()

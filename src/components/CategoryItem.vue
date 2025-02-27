@@ -8,11 +8,11 @@ const props = defineProps({
 const category = ref(null)
 const isLoading = ref(true)
 
+const apiCategoryUrl = `${import.meta.env.VITE_API_CATEGORY_URL}/${props.categoryId}`
+
 const fetchCategory = async () => {
   try {
-    const response = await fetch(
-      `http://localhost/trxvl/wp-json/trxvl-ruta/v1/categories/${props.categoryId}`,
-    )
+    const response = await fetch(apiCategoryUrl)
     if (!response.ok) throw new Error('Failed to fetch category')
 
     const data = await response.json()

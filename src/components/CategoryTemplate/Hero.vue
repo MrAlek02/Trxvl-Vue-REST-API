@@ -13,10 +13,12 @@ const props = defineProps({
 watch(
   () => props.categoryId,
   async (newCategoryId) => {
+    if (!newCategoryId) return
+
+    const apiUrl = `${import.meta.env.VITE_API_CATEGORY_IMAGES_URL}/${newCategoryId}`
+
     try {
-      const response = await fetch(
-        `http://localhost/trxvl/wp-json/trxvl/v1/categories/${newCategoryId}`,
-      )
+      const response = await fetch(apiUrl)
       if (!response.ok) throw new Error('Failed to fetch images')
 
       const data = await response.json()

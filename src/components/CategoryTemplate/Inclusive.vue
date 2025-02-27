@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import InclusiveItem from './Items.vue'
-
 import { register } from 'swiper/element/bundle'
+
 register()
 
 const posts = ref([])
@@ -14,10 +14,12 @@ const props = defineProps({
 watch(
   () => props.categoryId,
   async (newCategoryId) => {
+    if (!newCategoryId) return
+
+    const apiUrl = `${import.meta.env.VITE_API_INCLUSIVE_URL}/${newCategoryId}`
+
     try {
-      const response = await fetch(
-        `http://localhost/trxvl/wp-json/trxvl/v1/categories/inclusive/${newCategoryId}`,
-      )
+      const response = await fetch(apiUrl)
       if (!response.ok) throw new Error('Failed to fetch posts')
 
       posts.value = await response.json()
@@ -25,6 +27,7 @@ watch(
       console.error('Error fetching posts:', error)
     }
   },
+  { immediate: true },
 )
 </script>
 

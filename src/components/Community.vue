@@ -7,9 +7,11 @@ register()
 
 const community = ref([])
 
+const apiCommunityUrl = `${import.meta.env.VITE_API_COMMUNITY_URL}`
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/community')
+    const response = await fetch(apiCommunityUrl)
     if (!response.ok) throw new Error('Failed to fetch community data')
 
     community.value = await response.json()

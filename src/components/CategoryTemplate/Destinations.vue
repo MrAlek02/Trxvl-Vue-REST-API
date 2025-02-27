@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch } from 'vue'
 import DestinationsItem from './Items.vue'
-
 import { register } from 'swiper/element/bundle'
+
 register()
 
 const posts = ref([])
@@ -14,21 +14,24 @@ const props = defineProps({
   },
 })
 
-watch(  () => props.categoryId,
-async (newCategoryId) => {
-  try {
-    const response = await fetch(
-      `http://localhost/trxvl/wp-json/trxvl/v1/categories/post/${newCategoryId}`,
-    )
-    if (!response.ok) throw new Error('Failed to fetch posts')
+watch(
+  () => props.categoryId,
+  async (newCategoryId) => {
+    if (!newCategoryId) return
 
-    posts.value = await response.json()
-  } catch (error) {
-    console.error('Error fetching posts:', error)
-  }
-})
+    const apiDestinationUrl = `${import.meta.env.VITE_API_CATEGORY_DESTINATIONS_URL}/${newCategoryId}`
+
+    try {
+      const response = await fetch(apiDestinationUrl)
+      if (!response.ok) throw new Error('Failed to fetch posts')
+
+      posts.value = await response.json()
+    } catch (error) {
+      console.error('Error fetching posts:', error)
+    }
+  },
+)
 </script>
-
 <template>
   <div class="container">
     <div class="hero-subtitle | js-destinations">

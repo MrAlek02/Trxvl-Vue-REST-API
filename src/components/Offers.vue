@@ -7,9 +7,11 @@ register()
 
 const offers = ref([])
 
+const apiOffersUrl = `${import.meta.env.VITE_API_OFFERS_URL}`
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost/trxvl/wp-json/trxvl/v1/offers')
+    const response = await fetch(apiOffersUrl)
     if (!response.ok) throw new Error('Failed to fetch posts')
 
     offers.value = await response.json()
